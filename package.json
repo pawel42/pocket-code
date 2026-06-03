@@ -26,13 +26,15 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-perfectionist": "^5.9.0",
     "eslint-plugin-prettier": "^5.5.6",
+    "expo-mcp": "^0.2.4",
     "husky": "^9.0.0",
     "lint-staged": "^17.0.7",
     "prettier": "^3.8.3",
     "typescript": "~6.0.3"
   },
   "scripts": {
-    "start": "expo start",
+    "start": "EXPO_UNSTABLE_MCP_SERVER=1 expo start",
+    "em:android": "~/Library/Android/sdk/emulator/emulator -avd Medium_Phone",
     "clean": "rm -rf .expo node_modules",
     "lint": "expo lint",
     "lint:fix": "expo lint --fix",
