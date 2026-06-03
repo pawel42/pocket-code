@@ -1,7 +1,14 @@
 echo "🔧 Linting and formatting your code..."
 
 if npx lint-staged; then
-    echo "✅ Code looks good! Committing..."
+    echo "🧪 Running tests..."
+    if npx jest --passWithNoTests; then
+        echo "✅ Tests passed! Committing..."
+    else
+        echo "❌ Tests failed!"
+        echo "💡 Fix the failing tests or use 'git commit --no-verify' to skip checks (not recommended)."
+        exit 1
+    fi
 else
     echo "❌ Linting failed!"
     echo "💡 Fix the errors above or use 'git commit --no-verify' to skip checks (not recommended)."
