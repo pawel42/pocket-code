@@ -1,0 +1,9 @@
+echo "🔧 Linting and formatting your code..."
+
+if npx lint-staged; then
+    echo "✅ Code looks good! Committing..."
+else
+    echo "❌ Linting failed!"
+    echo "💡 Fix the errors above or use 'git commit --no-verify' to skip checks (not recommended)."
+    exit 1
+fi

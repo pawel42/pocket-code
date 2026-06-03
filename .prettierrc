@@ -1,0 +1,13 @@
+{
+  "printWidth": 100,
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "overrides": [
+    {
+      "files": ["*.json", "*.jsonc"],
+      "options": {
+        "trailingComma": "none"
+      }
+    }
+  ]
+}
