@@ -1,7 +1,22 @@
 {
+  // Runs eslint --fix on save (handles both linting and prettier formatting via eslint-plugin-prettier)
   "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit",
-    "source.organizeImports": "explicit",
-    "source.sortMembers": "explicit"
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // Required for ESLint v9+ flat config support
+  "eslint.useESLintClass": true,
+
+  // Enable format on save globally; per-language formatters below handle which tool to use
+  "editor.formatOnSave": true,
+
+  // JS/TS: Use ESLint as the formatter (it runs prettier through eslint-plugin-prettier)
+  "[javascript][javascriptreact][typescript][typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+
+  // Other files: Use Prettier directly (ESLint doesn't handle JSON/CSS/markdown)
+  "[json][jsonc][css][markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
