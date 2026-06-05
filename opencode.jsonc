@@ -1,5 +1,11 @@
 {
   "$schema": "https://opencode.ai/config.schema.json",
+  "default_agent": "product-manager",
+  "instructions": [
+    ".opencode/instructions/project-overview.md",
+    ".opencode/instructions/code-best-practices.md",
+    ".opencode/instructions/code-style.md"
+  ],
   "mcp": {
     "expo": {
       "enabled": true
