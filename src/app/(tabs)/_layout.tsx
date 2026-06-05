@@ -1,71 +1,33 @@
-import { Link, Tabs } from 'expo-router';
-import { SymbolView } from 'expo-symbols';
-import { Pressable } from 'react-native';
+import { NativeTabs } from 'expo-router/unstable-native-tabs';
+import { useMemo } from 'react';
 
-import { useClientOnlyValue } from '@/components/useClientOnlyValue';
 import { useColorScheme } from '@/components/useColorScheme';
 import Colors from '@/constants/Colors';
 
-export default function TabLayout() {
+const TabLayout = () => {
   const colorScheme = useColorScheme();
+  const labelStyle = useMemo(() => ({ color: Colors[colorScheme].text }), [colorScheme]);
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
-      }}
+    <NativeTabs
+      tintColor={Colors[colorScheme].tint}
+      backgroundColor={Colors[colorScheme].background}
+      labelStyle={labelStyle}
+      disableTransparentOnScrollEdge
     >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => (
-            <SymbolView
-              name={{
-                ios: 'chevron.left.forwardslash.chevron.right',
-                android: 'code',
-                web: 'code',
-              }}
-              tintColor={color}
-              size={28}
-            />
-          ),
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable style={{ marginRight: 15 }}>
-                {({ pressed }) => (
-                  <SymbolView
-                    name={{ ios: 'info.circle', android: 'info', web: 'info' }}
-                    size={25}
-                    tintColor={Colors[colorScheme].text}
-                    style={{ opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="two"
-        options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => (
-            <SymbolView
-              name={{
-                ios: 'chevron.left.forwardslash.chevron.right',
-                android: 'code',
-                web: 'code',
-              }}
-              tintColor={color}
-              size={28}
-            />
-          ),
-        }}
-      />
-    </Tabs>
+      <NativeTabs.Trigger name="index">
+        <NativeTabs.Trigger.Label>Tab One</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon sf="chevron.left.forwardslash.chevron.right" md="code" />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="two">
+        <NativeTabs.Trigger.Label>Tab Two</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon
+          sf={{ default: 'gearshape', selected: 'gearshape.fill' }}
+          md={{ default: 'settings', selected: 'settings_filled' }}
+        />
+      </NativeTabs.Trigger>
+    </NativeTabs>
   );
-}
+};
+
+export default TabLayout;
