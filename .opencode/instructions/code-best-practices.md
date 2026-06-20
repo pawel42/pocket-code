@@ -1,8 +1,10 @@
 # Code Best Practices
 
-Agents must follow these clean code architectural guidelines to ensure codebase maintainability.
+Agents must follow these clean code architectural and stylistic guidelines to ensure codebase maintainability.
 
-## Self-Documenting Code
+## Architecture & Design Principles
+
+### Self-Documenting Code
 
 Use descriptive, intention-revealing variable and function names. Avoid cryptic abbreviations.
 
@@ -27,7 +29,7 @@ Use descriptive, intention-revealing variable and function names. Avoid cryptic 
   };
   ```
 
-## Single Responsibility Principle (SRP)
+### Single Responsibility Principle (SRP)
 
 Components and functions must do exactly one thing. Split large components into smaller, focused blocks.
 
@@ -86,7 +88,7 @@ Components and functions must do exactly one thing. Split large components into 
   export { Workspace };
   ```
 
-## Don't Repeat Yourself (DRY)
+### Don't Repeat Yourself (DRY)
 
 Extract repeated formatting expressions, calculations, or logic configurations into utility helpers.
 
@@ -108,18 +110,47 @@ Extract repeated formatting expressions, calculations, or logic configurations i
   // Use: const dateA = formatTime(s.createdAt);
   ```
 
-## Component Prop Explicit Typing
+## TypeScript Conventions
 
-To guarantee contract enforcement, avoid utilizing `any`. Explicitly declare prop shapes with TypeScript. Always type code across the entire codebase.
+### Prefer Types Over Interfaces
+
+Always use `type` aliases for object structural contracts, props, and states. Do not use `interface`.
 
 - ❌ **Bad:**
+  ```tsx
+  interface User {
+    id: string;
+    name: string;
+  }
+  ```
+- ✅ **Good:**
+  ```tsx
+  type User = { id: string; name: string };
+  ```
+
+### No `any` Type
+
+Never use `any`. Every function, hook, component, and utility must have explicit, typed parameters and return values.
+
+- ❌ **Bad:**
+
   ```tsx
   const Button = ({ props }: any) => (
     <TouchableOpacity onPress={props.action}>
       <Text>Go</Text>
     </TouchableOpacity>
   );
+
+  const fetchData = async (id: any): Promise<any> => {
+    return api.get(`/items/${id}`);
+  };
+
+  const useData = (params: any) => {
+    const [data, setData] = useState<any>(null);
+    // ...
+  };
   ```
+
 - ✅ **Good:**
 
   ```tsx
@@ -131,10 +162,79 @@ To guarantee contract enforcement, avoid utilizing `any`. Explicitly declare pro
     </TouchableOpacity>
   );
 
-  export { Button };
+  type Item = { id: string; name: string };
+
+  const fetchData = async (id: string): Promise<Item> => {
+    return api.get(`/items/${id}`);
+  };
+
+  type FetchParams = { id: string };
+
+  const useData = (params: FetchParams) => {
+    const [data, setData] = useState<Item | null>(null);
+    // ...
+  };
+
+  export { Button, fetchData, useData };
   ```
 
-## Clean Exports via Barrel Files (index.ts)
+### Explicit Type Imports
+
+When importing types, you must specify the `type` modifier.
+
+- Use a type-only import statement if the source file provides only types.
+- Use inline `type` keywords if you are co-importing values and types from the same file.
+
+- ❌ **Bad:**
+  ```tsx
+  import { Session, SessionState } from './types';
+  import { useSession, SessionConfig } from './sessionContext';
+  ```
+- ✅ **Good:**
+
+  ```tsx
+  // Type-only file import
+  import type { Session, SessionState } from './types';
+
+  // Mixed value and type file import
+  import { useSession, type SessionConfig } from './sessionContext';
+  ```
+
+## Export & Import Conventions
+
+### Post-Declared Exports (No Inline Exports)
+
+Never use inline `export` keywords. All exports must be grouped cleanly at the very bottom of the file in a specific, dense order with absolutely no empty spaces between them.
+
+**Strict Bottom-of-File Export Order:**
+
+1. Default exports
+2. Value/named exports
+3. Type exports
+
+- ❌ **Bad:**
+
+  ```tsx
+  export const useData = () => {};
+
+  export default MyComponent;
+  ```
+
+- ✅ **Good:**
+
+  ```tsx
+  type ComponentProps = { id: string };
+
+  const useData = () => {};
+
+  const MyComponent = () => {};
+
+  export default MyComponent;
+  export { useData };
+  export type { ComponentProps };
+  ```
+
+### Clean Exports via Barrel Files
 
 Use index.ts files within directories to aggregate and expose public features cleanly. This avoids deeply nested, messy import paths throughout the application.
 
@@ -152,4 +252,65 @@ Use index.ts files within directories to aggregate and expose public features cl
 
   // In your screen file:
   import { Button, Card } from '../../components';
+  ```
+
+### Path Aliases Over Deep Relative Imports
+
+Use path aliases (`@/*`) for cross-module imports to avoid deeply nested relative paths. Use relative imports only within a self-contained module or folder.
+
+- ❌ **Bad:**
+  ```tsx
+  import { Button } from '../../../components/Button';
+  ```
+- ✅ **Good:**
+
+  ```tsx
+  import { Button } from '@/components/Button';
+  ```
+
+  **Exception (self-contained module/folder):**
+
+  ```tsx
+  import { formatTime } from './utils/date';
+  ```
+
+## Style & Naming Conventions
+
+### Arrow Functions Only
+
+Always use arrow functions everywhere. This applies universally to components, hooks, array methods, and standard utility functions. Never use the `function` keyword.
+
+- ❌ **Bad:**
+  ```tsx
+  function StandardComponent() {
+    return <View />;
+  }
+  ```
+- ✅ **Good:**
+  ```tsx
+  const StandardComponent = () => {
+    return <View />;
+  };
+  ```
+
+### File Naming Conventions
+
+Use PascalCase for files that export a single React component. Use kebab-case for all other files, including hooks, utilities, constants, types, and compound components that export multiple components.
+
+- Component files (single component): `Button.tsx`, `WorkspaceScreen.tsx`
+- Non-component files: `use-auth.ts`, `format-date.ts`, `app-colors.ts`
+- Compound component files: `form-field.tsx`, `tab-bar.tsx`
+
+- ❌ **Bad:**
+  ```
+  useAuth.ts            (hook — should be kebab-case)
+  apiClient.ts          (utility — should be kebab-case)
+  TabBar.tsx            (compound component — should be kebab-case)
+  ```
+- ✅ **Good:**
+  ```
+  UserAvatar.tsx        (single component — PascalCase)
+  use-auth.ts           (hook — kebab-case)
+  api-client.ts         (utility — kebab-case)
+  tab-bar.tsx           (compound component — kebab-case)
   ```

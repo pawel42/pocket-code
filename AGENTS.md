@@ -6,8 +6,7 @@
 
 This project maintains shared instruction files that agents must read on a need-to-know basis. **Do not preload them all** — read the specific file when the task requires it.
 
-| File                                            | When to read                                                                                                              |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `.opencode/instructions/project-overview.md`    | Project description, tech stack, available commands                                                                       |
-| `.opencode/instructions/code-best-practices.md` | Architecture guidelines: SRP, DRY, self-documenting code, typed props, barrel exports                                     |
-| `.opencode/instructions/code-style.md`          | Style conventions: arrow functions, post-declared exports, types over interfaces, type imports, path aliases, file naming |
+| File                                            | When to read                                                                                                                                                                               |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `.opencode/instructions/project-overview.md`    | Project description, tech stack, available commands                                                                                                                                        |
+| `.opencode/instructions/code-best-practices.md` | Architecture & style: SRP, DRY, self-documenting code, typed props, barrel exports, arrow functions, post-declared exports, types over interfaces, type imports, path aliases, file naming |
