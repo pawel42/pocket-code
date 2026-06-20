@@ -68,10 +68,12 @@ Components and functions must do exactly one thing. Split large components into 
   };
 
   type DiffListProps = { items: Diff[]; onCommit: (id: string) => void };
+
   const DiffList = ({ items, onCommit }: DiffListProps) =>
     items.map((item) => <DiffItem key={item.id} item={item} onCommit={onCommit} />);
 
   type DiffItemProps = { item: Diff; onCommit: (id: string) => void };
+
   const DiffItem = ({ item, onCommit }: DiffItemProps) => (
     <View>
       <Text style={{ color: item.type === 'add' ? 'green' : 'red' }}>{item.content}</Text>
@@ -89,10 +91,13 @@ Components and functions must do exactly one thing. Split large components into 
 Extract repeated formatting expressions, calculations, or logic configurations into utility helpers.
 
 - ❌ **Bad:**
+
   ```tsx
   const dateA = new Date(s.createdAt).toLocaleDateString('en-US', { hour: '2-digit' });
+
   const dateB = new Date(l.timestamp).toLocaleDateString('en-US', { hour: '2-digit' });
   ```
+
 - ✅ **Good:**
 
   ```tsx
@@ -119,6 +124,7 @@ To guarantee contract enforcement, avoid utilizing `any`. Explicitly declare pro
 
   ```tsx
   type ButtonProps = { title: string; onPress: () => void };
+
   const Button = ({ title, onPress }: ButtonProps) => (
     <TouchableOpacity onPress={onPress}>
       <Text>{title}</Text>
@@ -134,15 +140,15 @@ Use index.ts files within directories to aggregate and expose public features cl
 
 - ❌ **Bad:**
   ```tsx
-  import { Button } from '../../components/Button/Button';
-  import { Card } from '../../components/Card/Card';
+  import { Button } from '../../components/Button';
+  import { Card } from '../../components/Card';
   ```
 - ✅ **Good:**
 
   ```tsx
   // components/index.ts
-  export { Button } from './Button/Button';
-  export { Card } from './Card/Card';
+  export { Button } from './Button';
+  export { Card } from './Card';
 
   // In your screen file:
   import { Button, Card } from '../../components';

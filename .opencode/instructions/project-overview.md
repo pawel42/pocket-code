@@ -1,6 +1,6 @@
 # Project Overview
 
-**Pocket Code** is a native mobile application (iOS & Android) built with Expo and React Native. It allows users to remotely connect to an active `opencode` server session.
+**Pocket Code** is a native mobile application (iOS & Android only) built with Expo and React Native. It allows users to remotely connect to an active `opencode` server session.
 
 ## Key Features
 

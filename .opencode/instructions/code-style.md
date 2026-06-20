@@ -30,16 +30,21 @@ Never use inline `export` keywords. All exports must be grouped cleanly at the v
 3. Type exports
 
 - ❌ **Bad:**
+
   ```tsx
   export const useData = () => {};
+
   export default MyComponent;
   ```
+
 - ✅ **Good:**
 
   ```tsx
-  const MyComponent = () => {};
-  const useData = () => {};
   type ComponentProps = { id: string };
+
+  const useData = () => {};
+
+  const MyComponent = () => {};
 
   export default MyComponent;
   export { useData };
@@ -90,12 +95,12 @@ Use path aliases (`@/*`) for cross-module imports to avoid deeply nested relativ
 
 - ❌ **Bad:**
   ```tsx
-  import { Button } from '../../../components/Button/Button';
+  import { Button } from '../../../components/Button';
   ```
 - ✅ **Good:**
 
   ```tsx
-  import { Button } from '@/components/Button/Button';
+  import { Button } from '@/components/Button';
   ```
 
   **Exception (self-contained module/folder):**
